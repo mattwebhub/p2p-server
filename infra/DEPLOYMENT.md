@@ -1,13 +1,13 @@
-# P2P Game Backend Kubernetes Deployment Guide
+# P2P Backend Kubernetes Deployment Guide
 
-This guide provides instructions for deploying the P2P Game Backend API to a Kubernetes cluster.
+This guide provides instructions for deploying the P2P Backend API to a Kubernetes cluster.
 
 ## Prerequisites
 
 - Kubernetes cluster with NGINX Ingress Controller
 - `kubectl` configured to access your cluster
 - Access to GitHub Container Registry (ghcr.io)
-- DNS configured for your domain (api.game.example.com and ws.game.example.com)
+- DNS configured for your domain (api.webserver.example.com and ws.webserver.example.com)
 
 ## Deployment Structure
 
@@ -28,8 +28,9 @@ infra/
 ## Pre-Deployment Steps
 
 1. **Create the namespace**:
+
    ```bash
-   kubectl create namespace p2p-game
+   kubectl create namespace p2p-webserver
    ```
 
 2. **Configure secrets**:
@@ -37,18 +38,20 @@ infra/
    - Update the TURN shared secret in `infra/prod/kustomization.yaml`
 
 3. **Configure image pull secrets** (if needed):
+
    ```bash
    kubectl create secret docker-registry ghcr-pull-secret \
-     --namespace p2p-game \
+     --namespace p2p-webserver \
      --docker-server=ghcr.io \
      --docker-username=YOUR_GITHUB_USERNAME \
      --docker-password=YOUR_GITHUB_TOKEN
    ```
 
 4. **Configure TLS** (if needed):
+
    ```bash
-   kubectl create secret tls game-tls-secret \
-     --namespace p2p-game \
+   kubectl create secret tls webserver-tls-secret \
+     --namespace p2p-webserver \
      --cert=/path/to/tls.crt \
      --key=/path/to/tls.key
    ```
@@ -64,28 +67,33 @@ kubectl apply -k infra/prod
 ## Verification
 
 1. **Check deployment status**:
+
    ```bash
-   kubectl get deployments -n p2p-game
+   kubectl get deployments -n p2p-webserver
    ```
 
 2. **Check pod status**:
+
    ```bash
-   kubectl get pods -n p2p-game
+   kubectl get pods -n p2p-webserver
    ```
 
 3. **Check service**:
+
    ```bash
-   kubectl get svc -n p2p-game
+   kubectl get svc -n p2p-webserver
    ```
 
 4. **Check ingress**:
+
    ```bash
-   kubectl get ingress -n p2p-game
+   kubectl get ingress -n p2p-webserver
    ```
 
 5. **Test the API**:
+
    ```bash
-   curl https://api.game.example.com/healthz
+   curl https://api.webserver.example.com/healthz
    ```
 
 ## Scaling
@@ -93,25 +101,27 @@ kubectl apply -k infra/prod
 The deployment is configured with an initial replica count of 2. To scale:
 
 ```bash
-kubectl scale deployment backend-api -n p2p-game --replicas=4
+kubectl scale deployment backend-api -n p2p-webserver --replicas=4
 ```
 
 ## Troubleshooting
 
 1. **Check pod logs**:
+
    ```bash
-   kubectl logs -n p2p-game deployment/backend-api
+   kubectl logs -n p2p-webserver deployment/backend-api
    ```
 
 2. **Check pod events**:
+
    ```bash
-   kubectl describe pod -n p2p-game -l app=backend-api
+   kubectl describe pod -n p2p-webserver -l app=backend-api
    ```
 
 3. **Common Issues and Solutions**:
 
    - **Image Pull Errors**:
-     - Verify the image pull secret exists: `kubectl get secret ghcr-pull-secret -n p2p-game`
+     - Verify the image pull secret exists: `kubectl get secret ghcr-pull-secret -n p2p-webserver`
      - Check if the image exists in the registry
      - Ensure credentials are correct
 

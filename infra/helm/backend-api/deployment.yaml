@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backend-api
-  namespace: p2p-game
+  namespace: p2p-webserver
   labels:
     app: backend-api
 spec:
@@ -64,8 +64,6 @@ spec:
               name: backend-api-config
               key: TURN_DOMAIN
               optional: true
-          # Default fallback if ConfigMap is not available
-          # value: "turn.game.example.com"
         livenessProbe:
           httpGet:
             path: /healthz

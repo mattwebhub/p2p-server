@@ -1,8 +1,8 @@
-# P2P Game Backend API Documentation
+# P2P Backend API Documentation
 
 ## Overview
 
-This document provides an overview of the P2P Game Backend API, which serves as the backend for a peer-to-peer web game. The backend handles room creation, room listing, WebRTC signaling, and TURN credential issuance.
+This document provides an overview of the P2P Backend API, which serves as the backend for a peer-to-peer web server. The backend handles room creation, room listing, WebRTC signaling, and TURN credential issuance.
 
 ## Current Implementation Status
 

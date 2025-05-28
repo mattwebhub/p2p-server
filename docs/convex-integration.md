@@ -1,6 +1,6 @@
-# Convex Integration for P2P Game Backend
+# Convex Integration for P2P Backend
 
-This document provides an overview of the Convex integration for data persistence in the P2P Game Backend.
+This document provides an overview of the Convex integration for data persistence in the P2P Backend.
 
 ## Components Implemented
 
@@ -17,7 +17,7 @@ This document provides an overview of the Convex integration for data persistenc
 3. **Service Layer**
    - UserService for user CRUD operations
    - RoomService for room management and player operations
-   - HashService for game state hash storage and retrieval
+   - HashService for webserver state hash storage and retrieval
 
 ## Schema
 
@@ -133,6 +133,7 @@ These can be configured in the `config.ts` file or provided as environment varia
 ## Testing
 
 The implementation includes comprehensive tests for all services:
+
 - Unit tests for UserService
 - Unit tests for RoomService
 - Unit tests for HashService

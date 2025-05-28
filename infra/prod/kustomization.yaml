@@ -1,6 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: p2p-game
+namespace: p2p-webserver
 resources:
 - ../helm/backend-api/deployment.yaml
 - ../helm/backend-api/service.yaml
@@ -21,5 +21,5 @@ secretGenerator:
 configMapGenerator:
 - name: backend-api-config
   literals:
-  - REDIS_URL=redis://redis.p2p-game.svc.cluster.local:6379
-  - TURN_DOMAIN=turn.game.example.com
+  - REDIS_URL=redis://redis.p2p-webserver.svc.cluster.local:6379
+  - TURN_DOMAIN=turn.webserver.example.com

@@ -1,6 +1,6 @@
 # WebSocket Signaling and Redis Pub/Sub Implementation
 
-This document provides an overview of the WebSocket signaling server and Redis pub/sub adapter implementation for the P2P Game Backend.
+This document provides an overview of the WebSocket signaling server and Redis pub/sub adapter implementation for the P2P Backend.
 
 ## Components Implemented
 
@@ -68,7 +68,7 @@ Clients connect to the WebSocket server using the `/signal/{roomId}` endpoint:
 
 ```javascript
 // Client-side code
-const ws = new WebSocket('ws://api.game.example.com/signal/room123');
+const ws = new WebSocket('ws://api.webserver.example.com/signal/room123');
 
 // Send SDP offer
 ws.send(JSON.stringify({
