@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-api
+  namespace: p2p-game
+  labels:
+    app: backend-api
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: backend-api
+  template:
+    metadata:
+      labels:
+        app: backend-api
+    spec:
+      containers:
+      - name: backend-api
+        image: ghcr.io/yourorg/p2p-backend-api:0.1.0
+        ports:
+        - containerPort: 3000
+          name: http
+        - containerPort: 4000
+          name: websocket
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 256Mi
+        env:
+        - name: PORT
+          value: "3000"
+        - name: WS_PORT
+          value: "4000"
+        - name: REDIS_URL
+          valueFrom:
+            configMapKeyRef:
+              name: backend-api-config
+              key: REDIS_URL
+              optional: true
+          # Default fallback if ConfigMap is not available
+          # value: "redis://redis:6379"
+        - name: CONVEX_URL
+          valueFrom:
+            secretKeyRef:
+              name: convex-secrets
+              key: convex-url
+        - name: CONVEX_DEPLOY_KEY
+          valueFrom:
+            secretKeyRef:
+              name: convex-secrets
+              key: convex-deploy-key
+        - name: CONVEX_ADMIN_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: convex-secrets
+              key: convex-admin-token
+        - name: TURN_DOMAIN
+          valueFrom:
+            configMapKeyRef:
+              name: backend-api-config
+              key: TURN_DOMAIN
+              optional: true
+          # Default fallback if ConfigMap is not available
+          # value: "turn.game.example.com"
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: http
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: http
+          initialDelaySeconds: 5
+          periodSeconds: 10
+      # Make imagePullSecrets optional to support different environments
+      imagePullSecrets:
+      - name: ghcr-pull-secret
+      # Add tolerations and node affinity as needed for your cluster
+      # tolerations:
+      # - key: "key"
+      #   operator: "Equal"
+      #   value: "value"
+      #   effect: "NoSchedule"

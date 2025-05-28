@@ -1,0 +1,25 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: p2p-game
+resources:
+- ../helm/backend-api/deployment.yaml
+- ../helm/backend-api/service.yaml
+- ../helm/backend-api/ingress.yaml
+
+images:
+- name: ghcr.io/yourorg/p2p-backend-api
+  newTag: 0.1.0
+
+secretGenerator:
+- name: convex-secrets
+  envs:
+  - convex-secrets.env
+- name: turn-shared-secret
+  literals:
+  - static-auth-secret=REPLACE_WITH_ACTUAL_SECRET
+
+configMapGenerator:
+- name: backend-api-config
+  literals:
+  - REDIS_URL=redis://redis.p2p-game.svc.cluster.local:6379
+  - TURN_DOMAIN=turn.game.example.com
