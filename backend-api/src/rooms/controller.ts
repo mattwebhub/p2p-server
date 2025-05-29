@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { roomService } from './service';
-import { CreateRoomSchema } from './schema';
+import { CreateRoomSchema, GetRoomsQuerySchema, RoomIdSchema } from './schema';
 
 export class RoomController {
   /**
@@ -29,9 +29,17 @@ export class RoomController {
    * Get all rooms
    * GET /rooms
    */
-  getAllRooms(_req: Request, res: Response): void {
+  getAllRooms(req: Request, res: Response): void {
     try {
-      const rooms = roomService.getAllRooms();
+      // Validate query parameters
+      const parseResult = GetRoomsQuerySchema.safeParse(req.query);
+      if (!parseResult.success) {
+        res.status(400).json({ error: 'Invalid query parameters', details: parseResult.error });
+        return;
+      }
+
+      const { limit, offset, status } = parseResult.data;
+      const rooms = roomService.getAllRooms({ limit, offset, status });
       res.status(200).json(rooms);
     } catch (error) {
       console.error('Error getting rooms:', error);
@@ -45,8 +53,15 @@ export class RoomController {
    */
   getRoomById(req: Request, res: Response): void {
     try {
+      // Validate roomId parameter
       const { roomId } = req.params;
-      const room = roomService.getRoomById(roomId);
+      const parseResult = RoomIdSchema.safeParse(roomId);
+      if (!parseResult.success) {
+        res.status(400).json({ error: 'Invalid room ID format', details: parseResult.error });
+        return;
+      }
+
+      const room = roomService.getRoomById(parseResult.data);
       
       if (!room) {
         res.status(404).json({ error: 'Room not found' });

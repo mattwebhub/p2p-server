@@ -2,7 +2,7 @@
 import WebSocket from 'ws';
 import { Server } from 'http';
 import { URL } from 'url';
-import { SignalMessage, SignalMessageSchema } from './types';
+import { SignalMessage, SignalMessageSchema, WebSocketConnectionParamsSchema } from './types';
 import { RedisAdapter, MockRedisAdapter } from './redisAdapter';
 
 export class SignalGateway {
@@ -31,14 +31,21 @@ export class SignalGateway {
         
         // Extract client ID from query parameters
         const clientId = url.searchParams.get('clientId');
-        if (!clientId) {
-          console.error('Client ID is required');
+        
+        // Validate connection parameters using Zod schema
+        const validationResult = WebSocketConnectionParamsSchema.safeParse({
+          roomId,
+          clientId
+        });
+        
+        if (!validationResult.success) {
+          console.error('Invalid WebSocket connection parameters:', validationResult.error);
           socket.destroy();
           return;
         }
 
         this.wss.handleUpgrade(request, socket, head, (ws) => {
-          this.handleConnection(ws, roomId, clientId);
+          this.handleConnection(ws, validationResult.data.roomId, validationResult.data.clientId);
         });
       } else {
         // Handle other upgrade requests or reject
