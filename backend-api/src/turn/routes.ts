@@ -1,6 +1,8 @@
 import express from 'express';
 import { turnCredentialService } from './service';
 import { rateLimit } from 'express-rate-limit';
+import { TurnCredentialsRequestSchema, TurnCredentialsResponseSchema } from './schema';
+import { validateRequest } from '../shared/middleware/validation';
 
 // Create router
 export const turnRouter = express.Router();
@@ -19,17 +21,27 @@ const credentialLimiter = rateLimit({
  * GET /api/turn-credentials
  * Returns TURN server credentials for WebRTC connections
  */
-turnRouter.get('/turn-credentials', credentialLimiter, (req, res) => {
-  try {
-    // Generate fresh credentials
-    const credentials = turnCredentialService.generateCredentials();
-    
-    // Return credentials to client
-    res.status(200).json(credentials);
-  } catch (error) {
-    console.error('Error generating TURN credentials:', error);
-    res.status(500).json({ error: 'Failed to generate TURN credentials' });
+turnRouter.get('/turn-credentials', 
+  credentialLimiter,
+  validateRequest(TurnCredentialsRequestSchema, 'query'),
+  (req, res, next) => {
+    try {
+      // Generate fresh credentials using validated query parameters
+      const credentials = turnCredentialService.generateCredentials(req.query.username);
+      
+      // Validate response data
+      const responseValidation = TurnCredentialsResponseSchema.safeParse(credentials);
+      if (!responseValidation.success) {
+        console.error('Invalid TURN credentials format:', responseValidation.error);
+        return next(new Error('Failed to generate valid TURN credentials'));
+      }
+      
+      // Return credentials to client
+      res.status(200).json(responseValidation.data);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 export default turnRouter;

@@ -1,5 +1,16 @@
 import { z } from 'zod';
 
+// WebSocket connection parameters schema
+export const WebSocketConnectionParamsSchema = z.object({
+  roomId: z.string().uuid(),
+  clientId: z.string().min(1).max(36),
+});
+export type WebSocketConnectionParams = z.infer<typeof WebSocketConnectionParamsSchema>;
+
+// System message types
+export const SystemEventEnum = z.enum(['connected', 'user-joined', 'user-left', 'error']);
+export type SystemEvent = z.infer<typeof SystemEventEnum>;
+
 // Signal message types
 export const SignalTypeEnum = z.enum(['sdp', 'ice', 'host-change', 'kick']);
 export type SignalType = z.infer<typeof SignalTypeEnum>;
