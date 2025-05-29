@@ -1,0 +1,68 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`TURN Credential API Snapshot Tests > Credential Lifecycle Snapshots > should match snapshot for credential refresh 1`] = `
+{
+  "credential": Any<String>,
+  "credentialType": "password",
+  "expiresAt": Any<Number>,
+  "urls": [
+    "turn:test.example.com:3478?transport=udp",
+    "turn:test.example.com:3478?transport=tcp",
+  ],
+  "username": StringMatching /\\^\\\\d\\+:\\\\d\\+\\$/,
+}
+`;
+
+exports[`TURN Credential API Snapshot Tests > Credential Lifecycle Snapshots > should match snapshot for credential refresh 2`] = `
+{
+  "credential": Any<String>,
+  "credentialType": "password",
+  "expiresAt": Any<Number>,
+  "urls": [
+    "turn:test.example.com:3478?transport=udp",
+    "turn:test.example.com:3478?transport=tcp",
+  ],
+  "username": StringMatching /\\^\\\\d\\+:\\\\d\\+\\$/,
+}
+`;
+
+exports[`TURN Credential API Snapshot Tests > Credential Lifecycle Snapshots > should match snapshot for credential refresh 3`] = `
+{
+  "credentialsDiffer": false,
+  "expirationsDiffer": false,
+  "usernamesDiffer": false,
+}
+`;
+
+exports[`TURN Credential API Snapshot Tests > Credential Response Snapshots > should match snapshot for rate limited response 1`] = `
+{
+  "error": "Too many requests",
+  "message": "Rate limit exceeded. Try again later.",
+}
+`;
+
+exports[`TURN Credential API Snapshot Tests > Credential Response Snapshots > should match snapshot for successful credential issuance 1`] = `
+{
+  "credential": Any<String>,
+  "credentialType": "password",
+  "expiresAt": Any<Number>,
+  "urls": [
+    "turn:test.example.com:3478?transport=udp",
+    "turn:test.example.com:3478?transport=tcp",
+  ],
+  "username": StringMatching /\\^\\\\d\\+:\\\\d\\+\\$/,
+}
+`;
+
+exports[`TURN Credential API Snapshot Tests > Error Handling Snapshots > should match snapshot for malformed requests 1`] = `
+{
+  "credential": Any<String>,
+  "credentialType": "password",
+  "expiresAt": Any<Number>,
+  "urls": [
+    "turn:test.example.com:3478?transport=udp",
+    "turn:test.example.com:3478?transport=tcp",
+  ],
+  "username": StringMatching /\\^\\\\d\\+:\\\\d\\+\\$/,
+}
+`;
