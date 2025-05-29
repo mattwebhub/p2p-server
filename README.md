@@ -84,3 +84,12 @@ npm run test:watch
 2. Set up Redis pub/sub adapter
 3. Configure Convex connection
 4. Implement TURN credential issuance
+
+## New Feature Implementation
+
+This change adds documentation for a new feature in the P2P server implementation. The feature includes:
+
+- Enhanced peer discovery mechanism
+- Improved connection reliability
+- Better error handling for network interruptions
+- Performance optimizations for large peer networks
