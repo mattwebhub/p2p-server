@@ -9,16 +9,17 @@ import { AnyZodObject, ZodError } from 'zod';
  * @returns Express middleware function that validates the request
  */
 export const validateRequest = (schema: AnyZodObject, source: 'body' | 'query' | 'params' = 'body') => {
-  return (req: Request, res: Response, next: NextFunction) => {
+  return (req: Request, res: Response, next: NextFunction): void => {
     try {
       const data = req[source];
       const parseResult = schema.safeParse(data);
       
       if (!parseResult.success) {
-        return res.status(400).json({
+        res.status(400).json({
           error: `Invalid ${source} parameters`,
           details: formatZodError(parseResult.error)
         });
+        return;
       }
       
       // Replace the request data with the validated and transformed data
@@ -26,7 +27,8 @@ export const validateRequest = (schema: AnyZodObject, source: 'body' | 'query' |
       return next();
     } catch (error) {
       console.error(`Validation error in ${source}:`, error);
-      return res.status(500).json({ error: 'Internal server error during validation' });
+      res.status(500).json({ error: 'Internal server error during validation' });
+      return;
     }
   };
 };

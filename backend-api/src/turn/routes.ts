@@ -1,6 +1,6 @@
 import express from 'express';
 import { turnCredentialService } from './service';
-import { rateLimit } from 'express-rate-limit';
+import rateLimit from 'express-rate-limit';
 import { TurnCredentialsRequestSchema, TurnCredentialsResponseSchema } from './schema';
 import { validateRequest } from '../shared/middleware/validation';
 
@@ -12,9 +12,7 @@ export const turnRouter = express.Router();
 const credentialLimiter = rateLimit({
   windowMs: 60 * 1000, // 1 minute
   max: 10, // 10 requests per window
-  standardHeaders: true,
-  legacyHeaders: false,
-  message: { error: 'Too many requests, please try again later' }
+  message: 'Too many requests, please try again later'
 });
 
 /**
@@ -27,7 +25,7 @@ turnRouter.get('/turn-credentials',
   (req, res, next) => {
     try {
       // Generate fresh credentials using validated query parameters
-      const credentials = turnCredentialService.generateCredentials(req.query.username);
+      const credentials = turnCredentialService.generateCredentials(req.query.username as string || "");
       
       // Validate response data
       const responseValidation = TurnCredentialsResponseSchema.safeParse(credentials);

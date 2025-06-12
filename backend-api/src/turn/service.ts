@@ -5,7 +5,7 @@ export class TurnCredentialService {
    * Generate time-limited TURN credentials
    * @returns TurnCredentials object with username, credential, and expiration
    */
-  public generateCredentials(): TurnCredentials {
+  public generateCredentials(username: string): TurnCredentials {
     return TurnConfig.generateCredentials();
   }
 

@@ -1,0 +1,66 @@
+{
+  "id": "crawler-1749692790183",
+  "startTime": "2025-06-12T01:46:30.183Z",
+  "lastSaveTime": "2025-06-12T01:57:50.257Z",
+  "config": {
+    "startUrls": [
+      "https://www.google.com"
+    ],
+    "maxDepth": 1,
+    "maxPages": 1,
+    "concurrency": 1,
+    "requestDelay": 1000,
+    "maxRetries": 3,
+    "timeout": 30000,
+    "respectRobotsTxt": false,
+    "userAgent": "Mozilla/5.0 (compatible; GoldenSilk/1.0)",
+    "rateLimiting": {
+      "requestsPerSecond": 1,
+      "requestsPerMinute": 30,
+      "requestsPerHour": 1800,
+      "domainDelay": 1000,
+      "respectRetryAfter": true
+    },
+    "session": {
+      "enabled": true,
+      "persistPath": "./sessions/test-session-1749692790164",
+      "saveInterval": 10000,
+      "autoRestore": false
+    },
+    "browser": {
+      "headless": true,
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "userAgent": "Mozilla/5.0 (compatible; GoldenSilk/1.0)",
+      "maxPages": 1,
+      "pageTimeout": 30000,
+      "timeout": 30000
+    },
+    "retry": {
+      "maxAttempts": 3,
+      "initialDelay": 1000,
+      "maxDelay": 10000,
+      "backoffMultiplier": 2,
+      "retryableErrors": [
+        "NETWORK_ERROR",
+        "TIMEOUT",
+        "RATE_LIMIT"
+      ]
+    },
+    "extractionRules": []
+  },
+  "queue": [],
+  "metrics": {
+    "urlsProcessed": 0,
+    "urlsSuccessful": 0,
+    "urlsFailed": 0,
+    "urlsSkipped": 0,
+    "bytesDownloaded": 0,
+    "averageResponseTime": 0,
+    "errorsEncountered": 0,
+    "startTime": "2025-06-12T01:46:30.183Z",
+    "duration": 680074
+  }
+}

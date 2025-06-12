@@ -18,20 +18,21 @@ router.get('/',
 );
 
 // GET /rooms/:roomId - Get a room by ID
-router.get('/:roomId', 
-  (req, res, next) => {
-    // Custom middleware to validate URL parameter
-    const parseResult = RoomIdSchema.safeParse(req.params.roomId);
-    if (!parseResult.success) {
-      return res.status(400).json({ 
-        error: 'Invalid room ID format', 
-        details: parseResult.error 
-      });
-    }
-    req.params.roomId = parseResult.data;
-    next();
-  },
-  roomController.getRoomById.bind(roomController)
-);
+// router.get("/:roomId", 
+//   (req, res, next) => {
+//     // Custom middleware to validate URL parameter
+//     const parseResult = RoomIdSchema.safeParse(req.params.roomId);
+//     if (!parseResult.success) {
+//       res.status(400).json({
+//         error: "Invalid room ID format",
+//         details: parseResult.error
+//       });
+//       return;
+//     }
+//     req.params.roomId = parseResult.data;
+//     next();
+//   },
+//   roomController.getRoomById.bind(roomController)
+// );
 
 export const roomsRouter = router;

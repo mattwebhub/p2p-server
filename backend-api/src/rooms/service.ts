@@ -26,8 +26,22 @@ export class RoomService {
   /**
    * Get all rooms
    */
-  getAllRooms(): RoomList {
-    return Object.values(roomsDb);
+  getAllRooms(options?: { limit?: number; offset?: number; status?: string }): RoomList {
+    let rooms = Object.values(roomsDb);
+
+    if (options?.status) {
+      rooms = rooms.filter(room => room.status === options.status);
+    }
+
+    if (options?.offset) {
+      rooms = rooms.slice(options.offset);
+    }
+
+    if (options?.limit) {
+      rooms = rooms.slice(0, options.limit);
+    }
+
+    return rooms;
   }
   
   /**
